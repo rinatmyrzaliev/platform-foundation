@@ -1,0 +1,25 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+
+# Local var files with real secrets — keep the .example committed.
+terraform.tfvars
+*.auto.tfvars
+
+# Kubeconfig / local kube state
+.kube/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Private keys (just in case)
+*.pem
+*.key

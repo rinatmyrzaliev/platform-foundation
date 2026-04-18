@@ -1,0 +1,7 @@
+aws_region          = "us-east-1"
+cluster_name        = "platform-sandbox"
+kubernetes_version  = "1.34"
+github_username     = "rinatmyrzaliev"
+node_instance_types = ["t3.medium"]
+node_desired_size   = 2
+environment_tag     = "sandbox"
