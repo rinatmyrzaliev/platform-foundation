@@ -159,3 +159,28 @@ block with migration instructions so the migration path is documented.
 table for state locking, per-environment state keys, `terraform_remote_state`
 data sources for cross-stack references. Created by a small `bootstrap/`
 Terraform stack that is itself bootstrapped manually or via CloudFormation.
+
+---
+
+# ADR-007: CPU limit deliberately optional
+
+## Status
+Accepted
+
+## Context
+The library chart enforces memory limits but makes CPU limits optional.
+Teams can set CPU limits if they choose, but the library does not require them.
+
+## Decision
+CPU limits are optional. Memory limits are required.
+
+## Rationale
+- CPU limits cause **throttling**. When a container hits its CPU limit, the kernel throttles it — the app slows down silently even when the node has spare CPU. This is hard to debug because the app looks healthy but responds slowly.
+- Memory limits cause **OOM kills**. When a container exceeds its memory limit, the kernel kills it. This is visible, alertable, and restartable — a safer failure mode.
+- CPU **requests** are still required. The scheduler uses requests for placement decisions. Without CPU requests, pods land on overloaded nodes.
+- Many production teams (including Google's internal guidance) recommend setting CPU requests but not CPU limits, to avoid artificial throttling.
+
+## Consequences
+- Teams must set `resources.requests.cpu` and `resources.requests.memory` (CI lint enforces this)
+- Teams must set `resources.limits.memory` (CI lint enforces this)
+- Teams may optionally set `resources.limits.cpu` if their workload requires strict isolation
