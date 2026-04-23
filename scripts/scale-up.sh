@@ -6,7 +6,7 @@ set -euo pipefail
 CLUSTER_NAME="${CLUSTER_NAME:-platform-sandbox}"
 NODEGROUP_NAME="${NODEGROUP_NAME:-workers-spot-20260418183742674200000013}"
 REGION="${AWS_REGION:-us-east-1}"
-DESIRED="${DESIRED:-2}"
+DESIRED="${DESIRED:-3}"
 
 echo "Scaling node group ${NODEGROUP_NAME} to desired=${DESIRED}..."
 
