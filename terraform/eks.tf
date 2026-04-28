@@ -78,3 +78,48 @@ module "ebs_csi_irsa_role" {
 
   tags = local.common_tags
 }
+
+
+# Fix: pod-to-pod traffic across nodes needs all-traffic rules between BOTH security groups.
+# EKS module creates a cluster primary SG and a separate node SG.
+# VPC CNI routes pod traffic through node ENIs, so both SGs must allow each other.
+
+resource "aws_security_group_rule" "cluster_sg_self" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  security_group_id        = module.eks.cluster_primary_security_group_id
+  source_security_group_id = module.eks.cluster_primary_security_group_id
+  description              = "Cluster SG self-referencing (pod networking)"
+}
+
+resource "aws_security_group_rule" "node_sg_self" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  security_group_id        = module.eks.node_security_group_id
+  source_security_group_id = module.eks.node_security_group_id
+  description              = "Node SG self-referencing (pod networking)"
+}
+
+resource "aws_security_group_rule" "cluster_to_node" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  security_group_id        = module.eks.node_security_group_id
+  source_security_group_id = module.eks.cluster_primary_security_group_id
+  description              = "Cluster SG to Node SG (pod networking)"
+}
+
+resource "aws_security_group_rule" "node_to_cluster" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  security_group_id        = module.eks.cluster_primary_security_group_id
+  source_security_group_id = module.eks.node_security_group_id
+  description              = "Node SG to Cluster SG (pod networking)"
+}
