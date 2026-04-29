@@ -1,5 +1,5 @@
 locals {
-  ecr_repositories = ["orders-service", "catalog-service", "payments-service"]
+  ecr_repositories = ["orders-service", "catalog-service", "payments-service", "alert-copilot"]
 
   ecr_lifecycle_policy = jsonencode({
     rules = [
