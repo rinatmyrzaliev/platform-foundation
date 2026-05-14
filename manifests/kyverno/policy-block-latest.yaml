@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: block-latest-tag
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: block-latest-tag
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kyverno
+                - falco
+                - kube-node-lease
+                - kube-public
+                - ingress-nginx
+                - monitoring
+                - keda
+      validate:
+        message: "Using 'latest' tag is not allowed. Use a specific version tag or SHA."
+        pattern:
+          spec:
+            containers:
+              - image: "!*:latest"

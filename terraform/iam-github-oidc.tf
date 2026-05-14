@@ -36,6 +36,7 @@ data "aws_iam_policy_document" "github_actions_trust" {
         "repo:${var.github_username}/platform-delivery:*",
         "repo:${var.github_username}/platform-autoscaling:*",
         "repo:${var.github_username}/platform-alert-copilot:*",
+        "repo:${var.github_username}/platform-notifications:*"
       ]
     }
   }
