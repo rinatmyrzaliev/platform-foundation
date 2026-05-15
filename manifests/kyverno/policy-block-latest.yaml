@@ -23,6 +23,12 @@ spec:
                 - ingress-nginx
                 - monitoring
                 - keda
+                - sonarqube
+                - argocd
+                - argo-rollouts
+                - cert-manager
+                - external-secrets
+                - karpenter
       validate:
         message: "Using 'latest' tag is not allowed. Use a specific version tag or SHA."
         pattern:

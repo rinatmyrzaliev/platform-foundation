@@ -23,6 +23,12 @@ spec:
                 - ingress-nginx
                 - monitoring
                 - keda
+                - sonarqube
+                - argocd
+                - argo-rollouts
+                - cert-manager
+                - external-secrets
+                - karpenter
       validate:
         message: "All containers must have CPU and memory requests and limits set."
         pattern:

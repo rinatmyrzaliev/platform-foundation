@@ -23,6 +23,12 @@ spec:
                 - ingress-nginx
                 - monitoring
                 - keda
+                - sonarqube
+                - argocd
+                - argo-rollouts
+                - cert-manager
+                - external-secrets
+                - karpenter
       validate:
         message: "Containers must run as non-root. Set securityContext.runAsNonRoot to true"
         pattern:
