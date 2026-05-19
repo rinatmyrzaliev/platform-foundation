@@ -23,7 +23,13 @@ module "eks" {
   cluster_addons = {
     vpc-cni = {
       most_recent = true
-    }
+      configuration_values = jsonencode({
+        env = {
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+       }
+     })
+  }
     kube-proxy = {
       most_recent = true
     }
@@ -49,6 +55,18 @@ module "eks" {
 
       ami_type   = "AL2023_x86_64_STANDARD"
       subnet_ids = module.vpc.public_subnets
+      
+      enable_bootstrap_user_data = true
+
+      cloudinit_pre_bootstrap_user_data = <<-EOT
+---
+apiVersion: node.eks.aws/v1alpha1
+kind: NodeConfig
+spec:
+  kubelet:
+    config:
+      maxPods: 110
+EOT
 
       labels = {
         node-role     = "worker"

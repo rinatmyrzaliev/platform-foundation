@@ -29,6 +29,7 @@ spec:
                 - cert-manager
                 - external-secrets
                 - karpenter
+                - logging
       validate:
         message: "Using 'latest' tag is not allowed. Use a specific version tag or SHA."
         pattern:
